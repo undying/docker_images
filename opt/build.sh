@@ -40,6 +40,7 @@ docker run \
   /opt/debootstrap.sh
 
 docker import ${build_path}/${image}/${image}.tar.gz ${image}
+rm -rvf ${build_path}/${image}
 
 for tag in ${tags};do
   image_tag=${distro}-${arch}:${tag}
