@@ -7,6 +7,8 @@ build_path=${BUILD_PATH:-/opt/build}
 chroot_path=${CHROOT_PATH:-${build_path}/chroot}
 mirror=${MIRROR:-http://ftp.ru.debian.org/debian/}
 
+rm -rf ${chroot_path}/*
+
 debootstrap \
   --variant=minbase \
   --arch=${arch} \
