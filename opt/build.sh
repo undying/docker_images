@@ -23,9 +23,10 @@ build_path=${BUILD_PATH:-/tmp}
 hub_ns=undying
 
 image=${distro}-${release}-${arch}
+build_image=${image}-build
 tags=$(tags_by_release ${release})
 
-docker build --file ${distro}.dockerfile --tag ${image}-build .
+docker build --file ${distro}.dockerfile --tag ${build_image} .
 docker run \
   --rm \
   --tty \
@@ -35,7 +36,7 @@ docker run \
   --env ARCH=${arch} \
   --env TARGET=${image} \
   --env RELEASE=${release} \
-  ${image} \
+  ${build_image} \
   /opt/debootstrap.sh
 
 docker import ${build_path}/${image}/${image}.tar.gz ${image}
@@ -48,7 +49,7 @@ for tag in ${tags};do
   docker rmi ${hub_ns}/${image_tag}
 done
 
-for i in ${image} ${image}-build;do
+for i in ${image} ${build_image};do
   docker rmi ${i}
 done
 
