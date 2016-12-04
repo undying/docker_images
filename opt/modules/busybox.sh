@@ -22,9 +22,10 @@ tar -xzf /tmp/opkg-${opkg_version}.tar.gz -C /tmp
 cd /tmp/opkg-${opkg_version}
 
 ./autogen.sh
-./configure \
+CFLAGS='--static' LDFLAGS='--static' \
+  ./configure \
+  --disable-shared \
   --prefix ${chroot_path} \
-  --exec-prefix=/ \
   --target=${arch}-linux
 
 make -j ${cpu_count}

@@ -10,10 +10,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     autoconf \
     automake \
     pkg-config \
+    libssl-dev \
     libtool-bin \
     libarchive-dev \
     libcurl4-openssl-dev \
     build-essential
+
+RUN apt-get install -y libgpgme11-dev
 
 COPY opt/ /opt/
 
