@@ -42,16 +42,16 @@ docker run \
 
 docker import ${build_path}/${image}/${image}.tar.gz ${image}
 
-#for tag in ${tags};do
-#  image_tag=${distro}-${arch}:${tag}
-#
-#  docker tag ${image} ${hub_ns}/${image_tag}
-#  docker push ${hub_ns}/${image_tag}
-#  docker rmi ${hub_ns}/${image_tag}
-#done
+for tag in ${tags};do
+  image_tag=${distro}-${arch}:${tag}
 
-#for i in ${image} ${build_image};do
-#  docker rmi ${i}
-#done
+  docker tag ${image} ${hub_ns}/${image_tag}
+  docker push ${hub_ns}/${image_tag}
+  docker rmi ${hub_ns}/${image_tag}
+done
+
+for i in ${image} ${build_image};do
+  docker rmi ${i}
+done
 
 # vi:syntax=sh
