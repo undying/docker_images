@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -e
 
 source opt/_tools.sh
 
@@ -7,7 +7,7 @@ while getopts a:d:r: arg;do
     a)
       arch=${OPTARG}
       ;;
-    n)
+    d)
       distro=${OPTARG}
       ;;
     r)
@@ -24,7 +24,7 @@ hub_ns=undying
 
 image=${distro}-${release}-${arch}
 build_image=${image}-build
-tags=$(tags_by_release ${release})
+tags=$(tags_by_distro_release ${distro} ${release})
 
 docker build --file ${distro}.dockerfile --tag ${build_image} .
 docker run \
@@ -35,22 +35,23 @@ docker run \
   --volume ${build_path}/${image}:/opt/build \
   --env ARCH=${arch} \
   --env TARGET=${image} \
+  --env DISTRO=${distro} \
   --env RELEASE=${release} \
   ${build_image} \
-  /opt/debootstrap.sh
+  /opt/module_load.sh
 
 docker import ${build_path}/${image}/${image}.tar.gz ${image}
 
-for tag in ${tags};do
-  image_tag=${distro}-${arch}:${tag}
+#for tag in ${tags};do
+#  image_tag=${distro}-${arch}:${tag}
+#
+#  docker tag ${image} ${hub_ns}/${image_tag}
+#  docker push ${hub_ns}/${image_tag}
+#  docker rmi ${hub_ns}/${image_tag}
+#done
 
-  docker tag ${image} ${hub_ns}/${image_tag}
-  docker push ${hub_ns}/${image_tag}
-  docker rmi ${hub_ns}/${image_tag}
-done
-
-for i in ${image} ${build_image};do
-  docker rmi ${i}
-done
+#for i in ${image} ${build_image};do
+#  docker rmi ${i}
+#done
 
 # vi:syntax=sh
