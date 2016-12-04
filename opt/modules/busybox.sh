@@ -4,8 +4,11 @@ opkg_version=0.2.4
 cpu_count=$(grep -c processor /proc/cpuinfo)
 
 mkdir -p ${chroot_path}/{bin,dev,etc,lib,proc,sbin,sys,usr,tmp}
+mkdir -p ${chroot_path}/etc/{init.d,opkg}
 mkdir -p ${chroot_path}/usr/{bin,sbin,lib,opkg} ${chroot_path}/usr/lib/opkg
-mkdir -p ${chroot_path}/etc/opkg
+mkdir -p ${chroot_path}/var/log
+touch ${chroot_path}/etc/rc.common
+
 
 wget -O ${chroot_path}/sbin/busybox \
   https://www.busybox.net/downloads/binaries/${release}/busybox-${arch}
@@ -41,6 +44,7 @@ make install
 cd ${chroot_path}/bin
 ln -s opkg-cl opkg
 
+
 cat - > ${chroot_path}/etc/opkg/opkg.conf <<EOF
 src/gz packages http://downloads.openwrt.org/snapshots/trunk/x86/generic/packages/packages
 src/gz base http://downloads.openwrt.org/snapshots/trunk/x86/generic/packages/base/
@@ -56,6 +60,7 @@ arch x86 2
 arch i686 5
 arch i386 10
 EOF
+
 
 cp -v /etc/resolv.conf ${chroot_path}/etc/
 chroot ${chroot_path} opkg update
