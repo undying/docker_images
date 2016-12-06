@@ -29,9 +29,7 @@ tags=$(tags_by_distro_release ${distro} ${release})
 docker build --file ${distro}.dockerfile --tag ${build_image} .
 docker run \
   --rm \
-  --tty \
   --privileged \
-  --interactive \
   --volume ${build_path}/${image}:/opt/build \
   --env ARCH=${arch} \
   --env TARGET=${image} \
