@@ -24,6 +24,6 @@ chroot ${chroot_path} apt-get autoremove
 
 umount -l ${chroot_path}/proc
 for i in /etc/resolv.conf /var/lib/apt/lists/* /var/cache/apt/* /usr/share/man/* /usr/share/doc/*;do
-  rm -rvf ${chroot_path}${i}
+  rm -rf ${chroot_path}${i}
 done
 
